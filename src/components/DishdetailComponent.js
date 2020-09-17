@@ -3,10 +3,7 @@ import { Card , CardImg , CardImgOverlay , CardText , CardBody , CardTitle} from
 
 class DishDetail extends Component{
 
-    constructor(props) {
-        super(props);
 
-    }
     renderDish(selectedDish){
 
         if (selectedDish != null){
@@ -33,7 +30,9 @@ class DishDetail extends Component{
                 return(
                     <ul className='list-unstyled'>
                         <li><p>{comment.comment}</p></li>
-                        <li><p>-- {comment.author} , {comment.date}</p></li>
+                        <li><p>-- {comment.author} ,
+                        {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}
+                        </p></li>
                     </ul>
                 );
 
