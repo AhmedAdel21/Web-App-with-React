@@ -1,29 +1,22 @@
 import React from 'react';
-import { Card , CardImg  , CardText , CardBody , CardTitle} from 'reactstrap';
+import { Card , CardImg  , CardText , CardBody , CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import {Link} from 'react-router-dom'
 
-
-function RenderDish(selectedDish) {
-        if (selectedDish != null){
-            return(
-                <div className='col-12 col-md-5 m-1'>
-                    <Card>
-                        <CardImg width='100%' src={selectedDish.image} alt={selectedDish.name}/>
-                        <CardBody>
-                            <CardTitle>{selectedDish.name}</CardTitle>
-                            <CardText>{selectedDish.description}</CardText>
-                        </CardBody>
-                    </Card>   
-                </div>            
+function RenderDish({dish}) {
+        return(
+            <Card>
+                <CardImg width='100%' src={dish.image} alt={dish.name}/>
+                <CardBody>
+                    <CardTitle>{dish.name}</CardTitle>
+                    <CardText>{dish.description}</CardText>
+                </CardBody>
+             </Card>               
             );
-        }
-        else {
-            return(<div></div>);
-        }
 }
 
-function RenderComments(selectedDish) {
-        if (selectedDish != null){
-            const allComments = selectedDish.comments.map((comment) =>{
+function RenderComments({comments}) {
+        
+            const allComments = comments.map((comment) =>{
                 return(
                     <ul className='list-unstyled'>
                         <li><p>{comment.comment}</p></li>
@@ -36,24 +29,35 @@ function RenderComments(selectedDish) {
             });
 
             return(
-                <div className='col-12 col-md-5 m-1'>
-                    <h4>Comments</h4>
-                    <p>{allComments}</p>
+                <div>
+                <h4>Comments</h4>
+                <p>{allComments}</p>
                 </div>
             );
-        }
-        else{
-            return(<div></div>);
-        }
+        
+        
 }
 
 const DishDetail = (props) => {
-        const selectedDish = props.selectedDish;
         return(
             <div className="container">
                 <div className='row'>
-                    {RenderDish(selectedDish)}
-                    {RenderComments(selectedDish)}
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to='/Menu' >Menu</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className='col-12'>
+                        <h3>{props.dish.name}</h3>
+                        <hr />
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderDish dish={props.dish} />
+                    </div>
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderComments comments={props.comments} />
+                    </div>
                 </div>
             </div>
             
