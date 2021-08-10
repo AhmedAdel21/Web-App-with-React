@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Target } from 'react-popper';
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Button, Row, Col, Label } from 'reactstrap';
-import { Control, Form, Errors, actions } from 'react-redux-form';
+import { Control, Form, Errors } from 'react-redux-form';
 
 
 
@@ -25,8 +25,9 @@ class Contact extends Component {
 
 
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        //console.log('Current State is: ' + JSON.stringify(values));
+        //alert('Current State is: ' + JSON.stringify(values));
+        this.props.postFeedback(values);
         this.props.resetFeedbackForm();
         //event.preventDefault();
     }

@@ -8,17 +8,43 @@ export const addComment = (comment) => ({
 
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 
-  const newComment = {
-      dishId: dishId,
-      rating: rating,
-      author: author,
-      comment: comment
-  };
-  newComment.date = new Date().toISOString();
+    const newComment = {
+        dishId: dishId,
+        rating: rating,
+        author: author,
+        comment: comment
+    };
+    newComment.date = new Date().toISOString();
+    
+    return fetch(baseUrl + 'comments', {
+        method: "POST",
+        body: JSON.stringify(newComment),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+    .then(response => response.json())
+    .then(response => dispatch(addComment(response)))
+    .catch(error =>  { console.log('post comments', error.message); alert('Your comment could not be posted\nError: '+error.message); });
+};
+export const postFeedback = (feedback) => (dispatch) => {
   
-  return fetch(baseUrl + 'comments', {
+  return fetch(baseUrl + 'feedback', {
       method: "POST",
-      body: JSON.stringify(newComment),
+      body: JSON.stringify(feedback),
       headers: {
         "Content-Type": "application/json"
       },
@@ -37,7 +63,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
           throw error;
     })
   .then(response => response.json())
-  .then(response => dispatch(addComment(response)))
+  .then(response => {alert('Thank you for your Feedback!\n ' + JSON.stringify(response));})
   .catch(error =>  { console.log('post comments', error.message); alert('Your comment could not be posted\nError: '+error.message); });
 };
 
